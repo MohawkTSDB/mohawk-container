@@ -130,8 +130,8 @@ objects:
           name: heapster
           command:
           - "heapster-wrapper.sh"
-          - "--source=kubernetes:${MASTER_URL}?useServiceAccount=true&kubeletHttps=true&kubeletPort=10250"
           - "--wrapper.endpoint_check=${MOHWAK_URL}/hawkular/metrics/status"
+          - "--source=kubernetes.summary_api:${MASTER_URL}?useServiceAccount=true&kubeletHttps=true&kubeletPort=10250"
           - "--sink=hawkular:${MOHWAK_URL}?tenant=_system&labelToTenant=namespace_name&labelNodeId=nodename&caCert=/var/run/secrets/kubernetes.io/serviceaccount/service-ca.crt&filter=label(container_name:^system.slice.*|^user.slice)"
           - "--metric_resolution=${METRIC_RESOLUTION}"
           env:

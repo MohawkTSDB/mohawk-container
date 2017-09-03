@@ -3,7 +3,8 @@
 
 # get system IP , must be run on openshift master
 # we will use this value to set the route to the metrics service
-export MOHAWK_URL="mohawk.$(ifconfig eth0 | grep 'inet ' | cut -f 10 -d' ').nip.io"
+#export MOHAWK_URL="mohawk.$(ifconfig eth0 | grep 'inet ' | cut -f 10 -d' ').nip.io"
+export MOHAWK_URL="mohawk.$(ip addr show eth0 | grep 'inet ' | cut -f 6 -d' ' | cut -f 1 -d '/').nip.io"
 
 # download the mohawk template file
 wget https://raw.githubusercontent.com/yaacov/mohawk-container/master/mohawk-template.yaml

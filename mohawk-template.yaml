@@ -103,7 +103,7 @@ objects:
           name: mohawk
       spec:
         containers:
-        - image: "docker.io/yaacov/mohawk:0.19.8"
+        - image: "docker.io/yaacov/mohawk:0.20.1"
           name: mohawk
           ports:
           - name: mohawk-https

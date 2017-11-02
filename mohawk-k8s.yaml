@@ -1,0 +1,112 @@
+apiVersion: v1
+kind: List
+items:
+
+- apiVersion: v1
+  kind: Secret
+  metadata:
+    name: mohawk-secrets
+    namespace: kube-system
+  data:
+    tls.crt: < BASE64 tls.crt file data >
+    tls.key: < BASE64 tls.crt file data >
+
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: mohawk
+    namespace: kube-system
+  spec:
+    selector:
+      name: mohawk
+    ports:
+    - protocol: TCP
+      port: 443
+      targetPort: mohawk-https
+      nodePort: 30064
+    type: LoadBalancer
+
+- apiVersion: v1
+  kind: ReplicationController
+  metadata:
+    name: mohawk
+    namespace: kube-system
+    labels:
+      metrics-infra: mohawk
+      name: mohawk
+  spec:
+    selector:
+      name: mohawk
+    replicas: 1
+    template:
+      metadata:
+        labels:
+          metrics-infra: mohawk
+          name: mohawk
+      spec:
+        volumes:
+        - name: mohawk-secrets
+          secret:
+            secretName: mohawk-secrets
+        containers:
+        - image: "docker.io/yaacov/mohawk:0.21.4"
+          name: mohawk
+          ports:
+          - name: mohawk-https
+            containerPort: 8443
+          volumeMounts:
+          - name: mohawk-secrets
+            mountPath: "/secrets"
+          env:
+          - name: HAWKULAR_FILE_PEM
+            value: "/secrets/tls.crt"
+          - name: HAWKULAR_FILE_KEY
+            value: "/secrets/tls.key"
+          - name: HAWKULAR_PORT
+            value: "8443"
+          - name: HAWKULAE_BACKEND
+            value: "memory"
+          - name: HAWKULAE_FLAGS
+            value: "--gzip --tls"
+          - name: HAWKULAE_DB_DIR
+            value: "./server"
+          - name: HAWKULAE_DB_URL
+            value: ""
+
+- apiVersion: v1
+  kind: ReplicationController
+  metadata:
+    name: heapster
+    namespace: kube-system
+    labels:
+      metrics-infra: heapster
+      name: heapster
+  spec:
+    selector:
+      name: heapster
+    replicas: 1
+    template:
+      metadata:
+        labels:
+          metrics-infra: heapster
+          name: heapster
+      spec:
+        volumes:
+        - name: mohawk-secrets
+          secret:
+            secretName: mohawk-secrets
+        containers:
+        - image: "openshift/origin-metrics-heapster:latest"
+          name: heapster
+          command:
+          - "heapster-wrapper.sh"
+          - "--wrapper.endpoint_check=https://mohawk.kube-system.svc.cluster.local/hawkular/metrics/status"
+          - "--source=kubernetes.summary_api:https://kubernetes.default.svc.cluster.local?useServiceAccount=true&kubeletHttps=true&kubeletPort=10250&insecure=true"
+          - "--sink=hawkular:https://mohawk.kube-system.svc.cluster.local?tenant=_system&labelToTenant=namespace_name&labelNodeId=nodename&insecure=true&filter=label(container_name:^system.slice.*|^user.slice)"
+          - "--metric_resolution=30s"
+          volumeMounts:
+          - name: mohawk-secrets
+            mountPath: "/secrets"
+          env:
+          - name: STARTUP_TIMEOUT
+            value: "500"

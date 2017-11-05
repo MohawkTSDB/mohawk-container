@@ -1,0 +1,117 @@
+apiVersion: v1
+kind: List
+items:
+
+- apiVersion: v1
+  kind: Secret
+  metadata:
+    name: mohawk-secrets
+    namespace: kube-system
+  data:
+    tls.crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUIzRENDQVdPZ0F3SUJBZ0lKQUw5Vkp2dWlTVCtyTUFvR0NDcUdTTTQ5QkFNQ01Dc3hDekFKQmdOVkJBWVQKQWxWVE1RMHdDd1lEVlFRSURBUnVZVzFsTVEwd0N3WURWUVFLREFSamIyMXdNQjRYRFRFM01EWXlOakEyTVRJeQpPRm9YRFRJM01EWXlOREEyTVRJeU9Gb3dLekVMTUFrR0ExVUVCaE1DVlZNeERUQUxCZ05WQkFnTUJHNWhiV1V4CkRUQUxCZ05WQkFvTUJHTnZiWEF3ZGpBUUJnY3Foa2pPUFFJQkJnVXJnUVFBSWdOaUFBVDkxODV5SHVaL0oyM20KdFVnYXRFNm5pbGlZMlFncFJxbk1MNEJRQ0JqMWVkbk5MQlZWN0tMSzZKQm9VK1RZMjl6WmI5OXJzS3VWeElZKwpqWFZ3RDNHaXh5cHJvOEJ3TzdCYTRzcW5wOC9vNkRRaTkydnRYaGE3VkUyWFdtRERTS1NqVXpCUk1CMEdBMVVkCkRnUVdCQlFGN1NqUXNnUERsUnk3WGR5VkRsTXZUeEtMZnpBZkJnTlZIU01FR0RBV2dCUUY3U2pRc2dQRGxSeTcKWGR5VkRsTXZUeEtMZnpBUEJnTlZIUk1CQWY4RUJUQURBUUgvTUFvR0NDcUdTTTQ5QkFNQ0EyY0FNR1FDTUI2ZgpKWC9tcitIKy90TXEwbkZraW1xL2tTenBicTNJV1N5MFRBcFAzc0t3ckwzcTBmYnoybnVhN2xGZExwNUtRQUl3CmZoNFlpdUZlZmtJOWQrQndtQ1N0Wk51eUsrdXlScmtPQUd1TU9nbGxENitMZUpxakpOVVNvSWVZRXozK3JzaEwKLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
+
+    tls.key: LS0tLS1CRUdJTiBFQyBQQVJBTUVURVJTLS0tLS0KQmdVcmdRUUFJZz09Ci0tLS0tRU5EIEVDIFBBUkFNRVRFUlMtLS0tLQotLS0tLUJFR0lOIEVDIFBSSVZBVEUgS0VZLS0tLS0KTUlHa0FnRUJCREQ4UUNySmYwMVJKL20zUVdiNVpNZ2pJekg3MG82ZjBWa0hqcnB1MnpKZFpKYVZWNTdUSmtZbApXTmJjWGJFTGVUU2dCd1lGSzRFRUFDS2haQU5pQUFUOTE4NXlIdVovSjIzbXRVZ2F0RTZuaWxpWTJRZ3BScW5NCkw0QlFDQmoxZWRuTkxCVlY3S0xLNkpCb1UrVFkyOXpaYjk5cnNLdVZ4SVkralhWd0QzR2l4eXBybzhCd083QmEKNHNxbnA4L282RFFpOTJ2dFhoYTdWRTJYV21ERFNLUT0KLS0tLS1FTkQgRUMgUFJJVkFURSBLRVktLS0tLQo=
+
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: mohawk
+    namespace: kube-system
+  spec:
+    selector:
+      name: mohawk
+    ports:
+    - protocol: TCP
+      port: 443
+      targetPort: mohawk-https
+      nodePort: 30064
+    type: LoadBalancer
+
+- apiVersion: v1
+  kind: ReplicationController
+  metadata:
+    name: mohawk
+    namespace: kube-system
+    labels:
+      metrics-infra: mohawk
+      name: mohawk
+  spec:
+    selector:
+      name: mohawk
+    replicas: 1
+    template:
+      metadata:
+        labels:
+          metrics-infra: mohawk
+          name: mohawk
+      spec:
+
+        volumes:
+        - name: mohawk-secrets
+          secret:
+            secretName: mohawk-secrets
+
+        containers:
+        - image: "docker.io/yaacov/mohawk:0.21.4"
+          name: mohawk
+          ports:
+          - name: mohawk-https
+            containerPort: 8443
+          volumeMounts:
+          - name: mohawk-secrets
+            mountPath: "/secrets"
+          env:
+          - name: HAWKULAR_FILE_PEM
+            value: "/secrets/tls.crt"
+          - name: HAWKULAR_FILE_KEY
+            value: "/secrets/tls.key"
+          - name: HAWKULAR_PORT
+            value: "8443"
+          - name: HAWKULAE_BACKEND
+            value: "memory"
+          - name: HAWKULAE_FLAGS
+            value: "--gzip --tls"
+          - name: HAWKULAE_DB_DIR
+            value: "./server"
+          - name: HAWKULAE_DB_URL
+            value: ""
+
+- apiVersion: v1
+  kind: ReplicationController
+  metadata:
+    name: heapster
+    namespace: kube-system
+    labels:
+      metrics-infra: heapster
+      name: heapster
+  spec:
+    selector:
+      name: heapster
+    replicas: 1
+    template:
+      metadata:
+        labels:
+          metrics-infra: heapster
+          name: heapster
+      spec:
+
+        volumes:
+        - name: mohawk-secrets
+          secret:
+            secretName: mohawk-secrets
+
+        containers:
+        - image: "openshift/origin-metrics-heapster:latest"
+          name: heapster
+          command:
+          - "heapster-wrapper.sh"
+          - "--wrapper.endpoint_check=https://mohawk.kube-system.svc.cluster.local/hawkular/metrics/status"
+          - "--source=kubernetes.summary_api:https://kubernetes.default.svc.cluster.local?useServiceAccount=true&kubeletHttps=true&kubeletPort=10250&insecure=true"
+          - "--sink=hawkular:https://mohawk.kube-system.svc.cluster.local?tenant=_system&labelToTenant=namespace_name&labelNodeId=nodename&insecure=true&filter=label(container_name:^system.slice.*|^user.slice)"
+          - "--metric_resolution=30s"
+          volumeMounts:
+          - name: mohawk-secrets
+            mountPath: "/secrets"
+          env:
+          - name: STARTUP_TIMEOUT
+            value: "500"

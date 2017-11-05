@@ -23,8 +23,8 @@ items:
     ports:
     - protocol: TCP
       port: 443
-      targetPort: mohawk-https
       nodePort: 30064
+      targetPort: mohawk-https
     type: LoadBalancer
 
 - apiVersion: v1

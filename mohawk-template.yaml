@@ -115,13 +115,13 @@ objects:
             value: /secrets/tls.key
           - name: HAWKULAR_PORT
             value: "8443"
-          - name: HAWKULAE_BACKEND
+          - name: HAWKULAR_BACKEND
             value: ${MOHAWK_BACKEND}
-          - name: HAWKULAE_FLAGS
+          - name: HAWKULAR_FLAGS
             value: "--gzip --tls"
-          - name: HAWKULAE_DB_DIR
+          - name: HAWKULAR_DB_DIR
             value: "./server"
-          - name: HAWKULAE_DB_URL
+          - name: HAWKULAR_DB_URL
             value: ${MONGO_HOSTNAME}
           volumeMounts:
           - name: mohawk-secrets

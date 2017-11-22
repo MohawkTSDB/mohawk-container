@@ -7,13 +7,13 @@ Mohawk metric data storage engine, this repository include scripts for the conta
 sudo systemctl start docker
 
 # build and tag
-docker build -t yaacov/mohawk ./
-docker tag yaacov/mohawk docker.io/yaacov/mohawk
+docker build -t mohawktsdb/mohawk ./
+docker tag yaacov/mohawk docker.io/mohawktsdb/mohawk
 
 # login and push image
 docker login
-sudo docker push docker.io/yaacov/mohawk
+sudo docker push docker.io/mohawktsdb/mohawk
 
 # run image
-docker run --name mohawk -e HAWKULAE_BACKEND="memory" -v $(readlink -f ./):/root/ssh:Z yaacov/mohawk
+docker run --name mohawk -e HAWKULAR_BACKEND="memory" -v $(readlink -f ./):/root/ssh:Z mohawktsdb/mohawk
 ```

@@ -1,6 +1,6 @@
 # mohawk-container/container-metrics
 
-## Setup metrics on k8s and OpenShift
+## Setup metrics on Kubernetes and OpenShift
 
 #### On OpenShift:
 ```
@@ -9,7 +9,7 @@ wget https://raw.githubusercontent.com/yaacov/mohawk-container/master/container-
 bash ./setup.sh
 ```
 
-#### On k8s:
+#### On Kubernetes:
 
 ```
 # Add cluster admin role to system:anonymous

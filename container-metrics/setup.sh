@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # setting the metrics service from template
 # -----------------------------------------
 

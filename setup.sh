@@ -7,7 +7,7 @@
 export MOHAWK_URL="mohawk.$(ip addr show eth0 | grep 'inet ' | cut -f 6 -d' ' | cut -f 1 -d '/').nip.io"
 
 # download the mohawk template file
-wget https://raw.githubusercontent.com/yaacov/mohawk-container/master/mohawk-template.yaml
+wget https://raw.githubusercontent.com/yaacov/mohawk-container/master/container-metrics/mohawk-template.yaml
 
 # delete running mohawk pod, route and service
 oc process -f mohawk-template.yaml | oc delete -f -

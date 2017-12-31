@@ -6,8 +6,8 @@ RUN mkdir /root/ssh
 RUN mkdir /root/mohawk-webui
 
 # install bin files
-COPY mohawk /usr/bin/
-COPY mohawk-webui /root/mohawk-webui
+COPY ./mohawk/mohawk /usr/bin/
+COPY ./mohawk-webui /root/mohawk-webui
 
 # set env variables
 ENV HAWKULAR_FILE_PEM="/root/ssh/server.pem" \
@@ -16,7 +16,7 @@ ENV HAWKULAR_FILE_PEM="/root/ssh/server.pem" \
   HAWKULAR_DB_DIR=./server \
   HAWKULAR_DB_URL=127.0.0.1 \
   HAWKULAR_FLAGS="--tls --gzip" \
-  HAWKULAR_BACKEND=memory \
+  HAWKULAR_STORAGE=memory \
   HAWKULAR_WEBUI="/root/mohawk-webui"
 
 # declare volume
@@ -29,8 +29,10 @@ EXPOSE $HAWKULAR_PORT
 # run the application
 WORKDIR /root
 RUN chmod -R ugo+rwx /root/server
-CMD /usr/bin/mohawk $HAWKULAR_FLAGS --port $HAWKULAR_PORT \
-  --cert $HAWKULAR_FILE_PEM --key $HAWKULAR_FILE_KEY \
-  --backend $HAWKULAR_BACKEND \
+CMD /usr/bin/mohawk $HAWKULAR_FLAGS \
+  --port $HAWKULAR_PORT \
+  --cert $HAWKULAR_FILE_PEM \
+  --key $HAWKULAR_FILE_KEY \
+  --storage $HAWKULAR_STORAGE \
   --media $HAWKULAR_WEBUI \
   --options "db-dirname=${HAWKULAR_DB_DIR}&db-url=${HAWKULAR_DB_URL}"

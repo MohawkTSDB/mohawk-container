@@ -3,17 +3,20 @@ Mohawk metric data storage engine, this repository include scripts for the conta
 
 
 ```
-# connect to server
-sudo systemctl start docker
+# start docker server if not running
+# sudo systemctl start docker
 
 # build and tag
-docker build -t mohawktsdb/mohawk ./
-docker tag yaacov/mohawk docker.io/mohawktsdb/mohawk
+docker build -t yaacov/mohawk -f ./mohawk-container/Dockerfile ./
+docker tag yaacov/mohawk docker.io/yaacov/mohawk:latest
 
-# login and push image
+# login
 docker login
-sudo docker push docker.io/mohawktsdb/mohawk
 
-# run image
-docker run --name mohawk -e HAWKULAR_BACKEND="memory" -v $(readlink -f ./):/root/ssh:Z mohawktsdb/mohawk
+# push image
+docker push docker.io/yaacov/mohawk:latest
+
+# run image with storage "memory"
+# assume we have server.key and server.pem in "../mohawk/" directory
+docker run --name mohawk -e HAWKULAR_STORAGE="memory" -v $(readlink -f ../mohawk/):/root/ssh:Z yaacov/mohawk:latest
 ```

@@ -24,7 +24,7 @@ parameters:
   name: MONGO_HOSTNAME
   value: mongo.kube-system.svc.cluster.local
 - description: Specify mohawk backend; e.g. "memory" or "mongo"
-  name: MOHAWK_BACKEND
+  name: MOHAWK_STORAGE
   value: "memory"
 - description: "How often metrics should be gathered. Defaults value of '15s' for 15 seconds"
   name: METRIC_RESOLUTION
@@ -116,7 +116,7 @@ objects:
           - name: HAWKULAR_PORT
             value: "8443"
           - name: HAWKULAR_BACKEND
-            value: ${MOHAWK_BACKEND}
+            value: ${MOHAWK_STORAGE}
           - name: HAWKULAR_FLAGS
             value: "--gzip --tls"
           - name: HAWKULAR_DB_DIR

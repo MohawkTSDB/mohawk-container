@@ -49,7 +49,7 @@ items:
           secret:
             secretName: mohawk-secrets
         containers:
-        - image: "docker.io/yaacov/mohawk:0.21.4"
+        - image: "docker.io/yaacov/mohawk:latest"
           name: mohawk
           ports:
           - name: mohawk-https
@@ -64,13 +64,13 @@ items:
             value: "/secrets/tls.key"
           - name: HAWKULAR_PORT
             value: "8443"
-          - name: HAWKULAE_BACKEND
+          - name: HAWKULAR_STORAGE
             value: "memory"
-          - name: HAWKULAE_FLAGS
+          - name: HAWKULAR_FLAGS
             value: "--gzip --tls"
-          - name: HAWKULAE_DB_DIR
+          - name: HAWKULAR_DB_DIR
             value: "./server"
-          - name: HAWKULAE_DB_URL
+          - name: HAWKULAR_DB_URL
             value: ""
 
 - apiVersion: v1

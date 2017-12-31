@@ -103,7 +103,7 @@ objects:
           name: mohawk
       spec:
         containers:
-        - image: "docker.io/yaacov/mohawk:0.21.4"
+        - image: "docker.io/yaacov/mohawk:latest"
           name: mohawk
           ports:
           - name: mohawk-https
@@ -115,7 +115,7 @@ objects:
             value: /secrets/tls.key
           - name: HAWKULAR_PORT
             value: "8443"
-          - name: HAWKULAR_BACKEND
+          - name: MOHAWK_STORAGE
             value: ${MOHAWK_STORAGE}
           - name: HAWKULAR_FLAGS
             value: "--gzip --tls"

@@ -6,7 +6,7 @@
 ```
 wget https://raw.githubusercontent.com/yaacov/mohawk-container/master/container-metrics/setup.sh
 
-oc project kube-system
+oc project openshift-metrics
 export MOHAWK_URL=<url of mohawk route>
 bash ./setup.sh
 ```

@@ -5,7 +5,7 @@ metadata:
   annotations:
     "openshift.io/display-name": Mohawk Metrics
     description: |
-      A simple metrics solution for an OpenShift cluster. Expects to be installed in the 'kube-system' namespace.
+      A simple metrics solution for an OpenShift cluster. Expects to be installed in the 'openshift-metrics' namespace.
     iconClass: icon-cogs
     tags: "metrics,monitoring,mohawk,heapster"
   labels:
@@ -19,10 +19,10 @@ parameters:
   value: https://kubernetes.default.svc
 - description: Internal URL for the mohawk server
   name: MOHWAK_URL
-  value: https://mohawk.kube-system.svc.cluster.local
+  value: https://mohawk.openshift-metrics.svc.cluster.local
 - description: Internal hostname for the mongo database server
   name: MONGO_HOSTNAME
-  value: mongo.kube-system.svc.cluster.local
+  value: mongo.openshift-metrics.svc.cluster.local
 - description: Specify mohawk backend; e.g. "memory" or "mongo"
   name: MOHAWK_STORAGE
   value: "memory"
@@ -32,9 +32,9 @@ parameters:
 - description: How long in seconds we should wait until Heapster starts up before attempting a restart
   name: STARTUP_TIMEOUT
   value: "500"
-- description: The namespace to instantiate heapster under. Defaults to 'kube-system'.
+- description: The namespace to instantiate heapster under. Defaults to 'openshift-metrics'.
   name: NAMESPACE
-  value: kube-system
+  value: openshift-metrics
 objects:
 - apiVersion: route.openshift.io/v1
   kind: Route

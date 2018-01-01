@@ -8,8 +8,7 @@ wget https://raw.githubusercontent.com/yaacov/mohawk-container/master/container-
 
 oc project kube-system
 
-export MOHAWK_URL=<url of mohawk route>
-bash ./setup.sh
+ROUTER_IP=[ip of mohawk route] bash ./setup.sh
 ```
 
 #### On Kubernetes:

@@ -6,7 +6,10 @@
 ```
 wget https://raw.githubusercontent.com/yaacov/mohawk-container/master/container-metrics/setup.sh
 
+# if project openshift-metrics does not exist, create it
+# oc create namespace openshift-metrics
 oc project openshift-metrics
+
 export MOHAWK_URL=<url of mohawk route>
 bash ./setup.sh
 ```

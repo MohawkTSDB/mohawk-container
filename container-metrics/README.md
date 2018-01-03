@@ -1,4 +1,4 @@
-# Kubernetes and OpenShift
+# Run on Kubernetes and OpenShift
 
 ## Setup
 

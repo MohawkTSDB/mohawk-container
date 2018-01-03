@@ -1,7 +1,7 @@
 # mohawk-container
 Mohawk metric data storage engine, this repository include scripts for the containerized version.
 
-See [Kubernetes and OpenShift](/container-metrics) for information about running on Kubernetes and openshift.
+See [Run on Kubernetes and OpenShift](/container-metrics) for information about running on Kubernetes and openshift.
 
 ```
 # start docker server if not running

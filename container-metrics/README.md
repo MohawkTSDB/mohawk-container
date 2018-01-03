@@ -1,6 +1,6 @@
-# mohawk-container/container-metrics
+# Kubernetes and OpenShift
 
-## Setup metrics on Kubernetes and OpenShift
+## Setup
 
 #### On OpenShift:
 ```

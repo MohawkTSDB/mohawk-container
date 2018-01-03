@@ -8,7 +8,10 @@ wget https://raw.githubusercontent.com/yaacov/mohawk-container/master/container-
 
 oc project kube-system
 
-ROUTER_IP=[ip of mohawk route] bash ./setup.sh
+# run setup script
+# ROUTER_IP is the IP address of the compute node running the haproxy.
+# e.g. ROUTER_IP=10.123.0.34 bash ./setup.sh
+ROUTER_IP=<ip of mohawk route> bash ./setup.sh
 ```
 
 #### On Kubernetes:

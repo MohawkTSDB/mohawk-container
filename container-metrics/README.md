@@ -1,6 +1,6 @@
 # Run on Kubernetes and OpenShift
 
-## Setup
+Here are instructions and templates for building container pods that will scrape data from k8s and openshift into a mohawk server.
 
 #### On OpenShift:
 ```

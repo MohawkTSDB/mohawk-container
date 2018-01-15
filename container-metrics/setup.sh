@@ -27,8 +27,8 @@ sed -i "/metricsPublicURL:/d" /etc/origin/master/master-config.yaml
 sed -i "/assetConfig:/a  \ \ metricsPublicURL: \"https://${MOHAWK_URL}/hawkular/metrics\"" /etc/origin/master/master-config.yaml
 
 # restart openshift
-systemctl restart origin-master.service
-systemctl restart atomic-openshift-master-api.service
+systemctl restart origin-master-api.service
+# systemctl restart atomic-openshift-master-api.servicesystemctl restart atomic-openshift-master-api.service
 
 # Exit
 exit

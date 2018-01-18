@@ -24,6 +24,6 @@ kubectl create clusterrolebinding kube-system-cluster-admin \
 
 # Get and run template
 wget https://raw.githubusercontent.com/yaacov/mohawk-container/master/container-metrics/mohawk-k8s.yaml
-kubectl create -f Projects/mohawk-container/mohawk-k8s-with-crt.yaml
+kubectl create -f Projects/mohawk-container/mohawk-k8s.yaml
 
 ```
